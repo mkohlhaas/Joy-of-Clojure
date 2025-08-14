@@ -14,7 +14,6 @@
   (:import (javax.swing JFrame JPanel JComponent)
            (java.awt BorderLayout Container)))
 
-
 (defn df-init [title]
   [[title] (atom {::title title})])
 
