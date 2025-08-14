@@ -32,7 +32,6 @@
                       {:run 1 :passed 1}
                       {:run 1 :failed 1}))))))
 
-
 (defn tweet-items [k feed]
   (k
    (for [item (filter (comp #{:item} :tag) (feed-children feed))]

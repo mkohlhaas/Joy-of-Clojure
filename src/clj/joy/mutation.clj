@@ -12,7 +12,6 @@
   (dotimes [t thread-count]
     (.submit thread-pool #(dotimes [_ exec-count] (f)))))
 
-
 ;; stress ref
 
 (defn stress-ref [r]

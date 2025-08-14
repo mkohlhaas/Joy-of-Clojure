@@ -16,11 +16,11 @@
 (defn mk-cps [accept? kend kont]
   (fn [n]
     (loop [n n, k kend]
-       (if (accept? n) ;; accept
-         (k 1)         ;; return
-         (recur (dec n)
-                (fn [v]
-                  (k ((partial kont v) n)))))))) ;; next
+      (if (accept? n) ;; accept
+        (k 1)         ;; return
+        (recur (dec n)
+               (fn [v]
+                 (k ((partial kont v) n)))))))) ;; next
 
 ;; defined using fn instead of loop, as shown in book text
 (defn mk-cps [accept? kend kont]

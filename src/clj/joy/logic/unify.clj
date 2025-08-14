@@ -16,11 +16,10 @@
   (let [L (get knowledge l l)
         R (get knowledge r r)]          ;; #1_satisfyone: Look up terms
     (cond
-     (= L R)   knowledge                ;; #2_satisfyone: No new knowledge
-     (lvar? L) (assoc knowledge L R)    ;; #3_satisfyone: Bind variable to other term!
-     (lvar? R) (assoc knowledge R L)
-     :default  nil)))
-
+      (= L R)   knowledge                ;; #2_satisfyone: No new knowledge
+      (lvar? L) (assoc knowledge L R)    ;; #3_satisfyone: Bind variable to other term!
+      (lvar? R) (assoc knowledge R L)
+      :default  nil)))
 
 (satisfy1 '?something 2 {})
 ;;=> {?something 2}
@@ -47,17 +46,17 @@
   (let [L (get knowledge l l)
         R (get knowledge r r)]
     (cond
-     (not knowledge)        nil
-     (= L R)          knowledge
-     (lvar? L)        (assoc knowledge L R)
-     (lvar? R)        (assoc knowledge R L)
-     (every? seq? [L R])
-       (satisfy (rest L)
-                (rest R)
-                (satisfy (first L)
-                         (first R)
-                         knowledge))
-     :default nil)))
+      (not knowledge)        nil
+      (= L R)          knowledge
+      (lvar? L)        (assoc knowledge L R)
+      (lvar? R)        (assoc knowledge R L)
+      (every? seq? [L R])
+      (satisfy (rest L)
+               (rest R)
+               (satisfy (first L)
+                        (first R)
+                        knowledge))
+      :default nil)))
 
 (satisfy 1 2 {})
 ;;=> nil
@@ -90,16 +89,14 @@
 
 (defn ground [binds]
   (into {}
-    (map (fn [[k v]]
-           [k (loop [v v]
-                (if (lvar? v)
-                  (recur (binds v))
-                  v))])
-         binds)))
+        (map (fn [[k v]]
+               [k (loop [v v]
+                    (if (lvar? v)
+                      (recur (binds v))
+                      v))])
+             binds)))
 
 (ground '{?y 1, ?x ?y})
-
-
 
 (require '[clojure.walk :as walk])
 
@@ -123,7 +120,6 @@
 (subst '{:a ?x, :b [1 ?x 3]} '{?x 2})
 ;;=> {:a 2, :b [1 2 3]}
 
-
 (def page
   '[:html
     [:head [:title ?title]]
@@ -131,7 +127,6 @@
 
 (subst page '{?title "Hi!"})
 ;;=> [:html [:head [:title "Hi!"]] [:body [:h1 "Hi!"]]]
-
 
 (defn meld [term1 term2]
   (->> {}
@@ -143,7 +138,6 @@
 
 (meld '(1 ?x) '(?y (?y 2)))
 ;;=> (1 (1 2))
-
 
 (satisfy '?answer 5 {})
 ;;=> {answer 5}

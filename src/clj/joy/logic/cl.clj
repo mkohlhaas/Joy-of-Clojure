@@ -9,10 +9,10 @@
                          (logic/== answer 5)))
 
 (logic/run* [q]
-      (logic/fresh [a]
-             (logic/membero a [1 2 3])
-             (logic/membero q [3 4 5])
-             (logic/== a q)))
+            (logic/fresh [a]
+                         (logic/membero a [1 2 3])
+                         (logic/membero q [3 4 5])
+                         (logic/== a q)))
 
 (logic/run* [h]
             (logic/fresh [t]
@@ -20,37 +20,35 @@
                          (logic/== [:head t] [:head :tail])))
 
 (logic/run* [val1 val2]
-  (logic/== {:a val1 :b 2} {:a 1 :b val2}))
+            (logic/== {:a val1 :b 2} {:a 1 :b val2}))
 
-    (logic/run* [val1]
-	  (logic/fresh [val2]
-        (logic/== {:a val1 :b 2} 
-                  {:a 1    :b val2})))
-
-    (logic/run* [q]
-	  (logic/fresh [val1 val2]
-        (logic/== {:a val1 :b 2} 
-                  {:a 1    :b val2})
-        (logic/== q [val1 val2])))
-
-
-(logic/run* [x y]    
-  (logic/== x y))
-
-(logic/run* [x y]
-  (logic/== x y)
-  (logic/== y x))
+(logic/run* [val1]
+            (logic/fresh [val2]
+                         (logic/== {:a val1 :b 2}
+                                   {:a 1    :b val2})))
 
 (logic/run* [q]
-  (logic/conde
-   [(logic/== q 1)]
-   [(logic/== q 2)]))
+            (logic/fresh [val1 val2]
+                         (logic/== {:a val1 :b 2}
+                                   {:a 1    :b val2})
+                         (logic/== q [val1 val2])))
 
-	(logic/run* [george]
-	  (logic/conde
-	   [(logic/== george :born)]
-	   [(logic/== george :unborn)]))
+(logic/run* [x y]
+            (logic/== x y))
 
+(logic/run* [x y]
+            (logic/== x y)
+            (logic/== y x))
+
+(logic/run* [q]
+            (logic/conde
+             [(logic/== q 1)]
+             [(logic/== q 2)]))
+
+(logic/run* [george]
+            (logic/conde
+             [(logic/== george :born)]
+             [(logic/== george :unborn)]))
 
 (logic/run* [h t]
             (logic/conde

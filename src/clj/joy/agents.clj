@@ -15,11 +15,11 @@
   (conj coll item))
 
 (comment
-    (send joy slow-conj "Second edition")
+  (send joy slow-conj "Second edition")
     ;=> #<Agent@5efefc32: ["First edition"]>
-    @joy
+  @joy
     ;=> ["First edition" "Second edition"]
-)
+  )
 
 (def log-agent (agent 0))
 

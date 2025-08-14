@@ -12,12 +12,12 @@
 
 (defn print-ast [ast]
   (pprint  ;; pprint indents output nicely
-    (prewalk ;; rewrite each node of the ast
-      (fn [x]
-        (if (map? x)
-          (select-keys x [:children :name :form :op]) ;; return selected entries of each map node
-          x))  ;; non-map nodes are left unchanged
-      ast)))
+   (prewalk ;; rewrite each node of the ast
+    (fn [x]
+      (if (map? x)
+        (select-keys x [:children :name :form :op]) ;; return selected entries of each map node
+        x))  ;; non-map nodes are left unchanged
+    ast)))
 
 ;; (comp/emit ast)
 

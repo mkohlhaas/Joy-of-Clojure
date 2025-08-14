@@ -31,7 +31,7 @@
 
 (defn choose-move
   "Randomly choose a legal move"
-  [[[mover mpos][_ enemy-pos]]]
+  [[[mover mpos] [_ enemy-pos]]]
   [mover (some #(good-move? % enemy-pos)
                (shuffle (king-moves mpos)))])
 
@@ -45,7 +45,7 @@
 
 (defn move-piece [[piece dest] [[_ src] _]]
   (alter (get-in board dest) place piece)
-  (alter (get-in board src ) place :-)
+  (alter (get-in board src) place :-)
   (alter num-moves inc))
 
 (defn update-to-move [move]
@@ -81,25 +81,23 @@
      (update-to-move move))))
 
 (comment
-    (reset-board!)
-    (make-move)
+  (reset-board!)
+  (make-move)
     ;=> [[:k [0 1]] [:K [2 0]]]
-    (board-map deref board)
+  (board-map deref board)
     ;=> [[:- :k :-] [:- :- :-] [:K :- :-]]
-    @num-moves
+  @num-moves
     ;=> 1
 
-    (dothreads! make-move-v2 :threads 100 :times 100)
-    (board-map #(dosync (deref %)) board)
+  (dothreads! make-move-v2 :threads 100 :times 100)
+  (board-map #(dosync (deref %)) board)
     ;=> [[:k :- :-] [:- :- :-] [:K :- :-]]
-    @to-move
+  @to-move
     ;=> [[:k [0 0]] [:K [2 0]]]
-    @num-moves
+  @num-moves
     ;=> 10001
-    )
-
-
+  )
 (defn move-piece [[piece dest] [[_ src] _]]
   (commute (get-in board dest) place piece)
-  (commute (get-in board src ) place :-)
+  (commute (get-in board src) place :-)
   (commute num-moves inc))

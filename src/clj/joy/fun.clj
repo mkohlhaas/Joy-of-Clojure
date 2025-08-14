@@ -27,5 +27,4 @@
 (comment
   (draw-values bit-and 256 256)
   (draw-values + 256 256)
-  (draw-values * 256 256)
-)
+  (draw-values * 256 256))

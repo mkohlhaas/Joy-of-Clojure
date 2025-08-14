@@ -10,14 +10,12 @@
           0
           (partition 2 descriptor)))
 
-
 (def distance-reader
   (partial convert
            {:m 1
             :km 1000,
             :cm 1/100,
             :mm [1/10 :cm]}))
-
 
 (def time-reader
   (partial convert
@@ -26,23 +24,18 @@
             :hr  [60 :min],
             :day [24 :hr]}))
 
-
 (comment
 
   (read-string "#unit/length [1 :m]")
   ;;=> 1
-  
+
   (binding [clojure.core/*data-readers* {'unit/time #'joy.units/time-reader}]
     (read-string "#unit/time [1 :min 30 :sec]"))
 
   ;;=> 90
 
   (binding [*default-data-reader-fn* #(-> {:tag %1 :payload %2})]
-    (read-string "#nope [:doesnt-exist]"))
-)
-
-
-
+    (read-string "#nope [:doesnt-exist]")))
 
 (defn relative-units [context unit]
   (if-let [spec (get context unit)]
@@ -50,7 +43,6 @@
       (convert context spec)
       spec)
     (throw (RuntimeException. (str "Undefined unit " unit)))))
-
 
 (defmacro defunits-of [name base-unit & conversions]
   (let [magnitude (gensym)
@@ -73,7 +65,6 @@
   :ft 0.3048
   :mile [5280 :ft])
 
-
 (comment
 
   (unit-of-distance 1 :m)
@@ -85,12 +76,9 @@
   (unit-of-distance 1 :ft)
   ;;=> 0.3048
 
-  (unit-of-distance 1 :mile) 
+  (unit-of-distance 1 :mile)
   ;;=> 1609.344
-  
-)
-
-
+  )
 (comment
 
   (def simple-metric {:meter 1, :km 1000, :cm 1/100, :mm [1/10 :cm]})
@@ -103,21 +91,17 @@
 
   (relative-units {:m 1, :cm 1/100, :mm [1/10 :cm]} :ramsden-chain)
   ;; Runtime....
-)
-
-
-
+  )
 (comment
   (def simple-metric {:meter 1, :km 1000, :cm 1/100, :mm [1/10 :cm]})
 
-
-  ;; how many meters are in 3 kilometers, 10 meters, 80 centimeters, 10mm?
+;; how many meters are in 3 kilometers, 10 meters, 80 centimeters, 10mm?
   (->    (* 3  (:km simple-metric))
-      (+ (* 10 (:meter simple-metric)))
-      (+ (* 80 (:cm simple-metric)))
-      (+ (* (:cm simple-metric)
-            (* 10 (first (:mm simple-metric)))))
-      float)
+         (+ (* 10 (:meter simple-metric)))
+         (+ (* 80 (:cm simple-metric)))
+         (+ (* (:cm simple-metric)
+               (* 10 (first (:mm simple-metric)))))
+         float)
 
   (convert simple-metric [1 :meter])
 
@@ -151,15 +135,15 @@
 
   (edn/read-string "{:a 42, \"b\" 36, [:c] 9}")
   ;;=> {:a 42, "b" 36, [:c] 9}
-  
+
   (edn/read-string "#unit/time [1 :min 30 :sec]")
   ;; java.lang.RuntimeException: No reader function for tag unit/time
-  
+
   (def T {'unit/time #'joy.units/time-reader})
-  
+
   (edn/read-string {:readers T} "#unit/time [1 :min 30 :sec]")
   ;;=> 90
 
   (edn/read-string {:readers T, :default vector} "#what/the :huh?")
   ;;=> [what/the :huh?]
-)
+  )

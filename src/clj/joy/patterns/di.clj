@@ -11,12 +11,11 @@
            :threads 2})
 
 (comment
-  
-  (factory/construct :lofi lofi)
-  
-  ;;=> #joy.patterns.abstract_factory.LowFiSim{:name :lofi, :descr "Low-fidelity sim"}
 
-)
+  (factory/construct :lofi lofi)
+
+  ;;=> #joy.patterns.abstract_factory.LowFiSim{:name :lofi, :descr "Low-fidelity sim"}
+  )
 
 (defprotocol Sys
   (start! [sys])
@@ -49,7 +48,7 @@
 
   (handle (build-system :sim1 lofi) {:weight 42})
   ;;=> 131.88
-  
+
   (extend-type joy.patterns.abstract_factory.HiFiSim
     Sys
     (start! [this] (println "Started a hifi simulator."))
@@ -67,19 +66,19 @@
   (handle (build-system :sim2 hifi) {:weight 42})
   ;; wait 5 seconds...
   ;;=> 131.9468914507713160154292M
-    
+
   (defn simulate [answer fast slow opts]
     (future (deliver answer (handle slow opts)))
     (handle fast opts))
 
   (def excellent (promise))
-  
+
   (simulate excellent
             (build-system :sim1 lofi)
             (build-system :sim2 hifi)
             {:weight 42})
   ;;=> 131.88
-  
+
   (realized? excellent)
   ;;=> false
 
@@ -90,7 +89,7 @@
 
   @excellent
   ;;=> 131.9468914507713160154292M
-)
+  )
 
 
 

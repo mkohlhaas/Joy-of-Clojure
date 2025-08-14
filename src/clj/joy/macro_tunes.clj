@@ -14,7 +14,7 @@
   [notes]
   (reductions (fn [{:keys [delay duration]} note]
                 (assoc note
-                  :delay (+ delay duration)))
+                       :delay (+ delay duration)))
               {:delay 0 :duration 0}
               notes))
 

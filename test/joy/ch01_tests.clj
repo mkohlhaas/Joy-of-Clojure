@@ -4,10 +4,8 @@
 (deftest general-tests
   (testing "that the snippets in chpater 1 works as expected"))
 
-
 (for [x [:a :b], y (range 5) :when (odd? y)] [x y])
 ;=> ([:a 1] [:a 3] [:b 1] [:b 3])
-
 
 (doseq [x [:a :b], y (range 5) :when (odd? y)] (prn x y))
 ; :a 1
@@ -15,7 +13,6 @@
 ; :b 1
 ; :b 3
 ;=> nil
-
 
 (for [x [:a :b], y (range 5) :when (odd? y)] [x y])
 ;=> ([:a 1] [:a 3] [:b 1] [:b 3])
@@ -26,30 +23,27 @@
 ; :b 3
 ;=> nil
 
+(defn query [max]
+  (SELECT [a b c]
+          (FROM X
+                (LEFT-JOIN Y :ON (= X.a Y.b)))
+          (WHERE (AND (< a 5) (< b ~max)))))
 
 (defn query [max]
   (SELECT [a b c]
-    (FROM X
-      (LEFT-JOIN Y :ON (= X.a Y.b)))
-    (WHERE (AND (< a 5) (< b ~max)))))
-
-
-(defn query [max]
-  (SELECT [a b c]
-    (FROM X
-      (LEFT-JOIN Y :ON (= X.a Y.b)))
-    (WHERE (AND (< a 5) (< b ~max)))))
-
+          (FROM X
+                (LEFT-JOIN Y :ON (= X.a Y.b)))
+          (WHERE (AND (< a 5) (< b ~max)))))
 
 (query 5)
 ;=> ["SELECT a, b, c FROM X LEFT JOIN Y ON (X.a = Y.b)
-         WHERE ((a < 5) AND (b < ?))"
+WHERE ((a < 5) AND (b < ?)) "
         [5]]
 
 
 (query 5)
-;=> ["SELECT a, b, c FROM X LEFT JOIN Y ON (X.a = Y.b)
-         WHERE ((a < 5) AND (b < ?))"
+;=> [" SELECT a, b, c FROM X LEFT JOIN Y ON (X.a = Y.b)
+WHERE ((a < 5) AND (b < ?)) "
         [5]]
 
 
@@ -58,7 +52,7 @@
         (LEFT-JOIN Y :ON (= X.a Y.b)))
   (WHERE (AND (< a 5) (< b ~max))))
 
-;=> ["SELECT a, b, c FROM X LEFT JOIN Y ON (X.a = Y.b) WHERE ((a < 5) AND (b < ?))" 
+;=> [" SELECT a, b, c FROM X LEFT JOIN Y ON (X.a = Y.b) WHERE ((a < 5) AND (b < ?)) " 
 ;; [#]]
 
 
@@ -67,7 +61,7 @@
         (LEFT-JOIN Y :ON (= X.a Y.b)))
   (WHERE (AND (< a 5) (< b ~max))))
 
-;=> ["SELECT a, b, c FROM X LEFT JOIN Y ON (X.a = Y.b) WHERE ((a < 5) AND (b < ?))" 
+;=> [" SELECT a, b, c FROM X LEFT JOIN Y ON (X.a = Y.b) WHERE ((a < 5) AND (b < ?)) " 
 ;; [#]]
 
 
@@ -78,17 +72,16 @@
     (WHERE (AND (< a 5) (< b ~max)))))
 
 (example-query 9)
-;=> ["SELECT a, b, c 
+;=> [" SELECT a, b, c
 ;;    FROM X LEFT JOIN Y ON (X.a = Y.b) 
 ;;    WHERE ((a < 5) AND (b < ?))" 
 ;;    [9]]
 
-
 (defn example-query []
   (SELECT [a b c]
-    (FROM X
-          (LEFT-JOIN Y :ON (= X.a Y.b)))
-    (WHERE (AND (< a 5) (< b ~max)))))
+          (FROM X
+                (LEFT-JOIN Y :ON (= X.a Y.b)))
+          (WHERE (AND (< a 5) (< b ~max)))))
 
 (example-query 9)
 ;=> ["SELECT a, b, c 
@@ -105,14 +98,12 @@
 (cat "House" " of Leaves")
 ;=> "House of Leaves"
 
-
 (extend-type java.util.List
   Concatenatable
   (cat [this other]
     (concat this other)))
 (cat [1 2 3] [4 5 6])
 ;=> (1 2 3 4 5 6)
-
 
 (extend-type java.util.List
   Concatenatable
@@ -125,16 +116,16 @@
 (def ^:dynamic *rank-key* \0)
 
 (defn- file-component [file]
-  (- (int file) (int *file-key*)))                                                          
+  (- (int file) (int *file-key*)))
 
 (defn- rank-component [rank]
-  (->> (int *rank-key*)       
+  (->> (int *rank-key*)
        (- (int rank))
        (- 8)
        (* 8)))
 
 (defn- index [file rank]
-  (+ (file-component file) (rank-component rank)))                                          
+  (+ (file-component file) (rank-component rank)))
 
 (defn lookup [board pos]
   (let [[file rank] pos]

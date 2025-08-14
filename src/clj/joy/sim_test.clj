@@ -9,16 +9,15 @@
 
 (defn lookup [db name]
   (first (sql/select
-           #(= name (:player %))
-           db)))
+          #(= name (:player %))
+          db)))
 
 (comment
 
   (lookup PLAYERS "Nick")
-  
+
   ;;=> {:ability 8/25, :player "Nick"}
-  
-)
+  )
 
 (defn update-stats [db event]
   (let [player    (lookup db (:player event))
@@ -32,8 +31,7 @@
   ;;=> #{{:ability 19/100, :player "Ryan"}
   ;;     {:ability 8/25, :player "Nick", :h 1, :avg 1.0, :ab 1}
   ;;     {:ability 13/50, :player "Matt"}}
-
-)
+  )
 
 (defn commit-event [db event]
   (dosync (alter db update-stats event)))
@@ -42,7 +40,7 @@
   (commit-event (ref PLAYERS) {:player "Nick", :result :hit})
 
   ;;=> #&lt;Ref@658ba666: #{...}&gt; 
-)
+  )
 
 (defn rand-event [{ability :ability}]
   (let [abil (numerator ability)
@@ -55,8 +53,8 @@
 
 (defn rand-events [total player]
   (take total
-        (repeatedly #(assoc (rand-event player) 
-                            :player 
+        (repeatedly #(assoc (rand-event player)
+                            :player
                             (:player player)))))
 
 (comment
@@ -64,8 +62,7 @@
   (rand-events 3 {:player "Nick", :ability 32/100})
 
   ;;=> ({:player "Nick", :result :out} {:player "Nick", :result :hit} {:player "Nick", :result :out})
-
-)
+  )
 
 ;; Should I show the error modes flag? At least back ref to agents section
 
@@ -88,7 +85,6 @@
     (feed db event))
   db)
 
-
 (comment
 
   (let [db (ref PLAYERS)]
@@ -106,8 +102,7 @@
 
   (es/effect-all {} @(agent-for-player "Nick"))
   ;;=> {:ab 100, :h 27, :avg 0.27}
-
-)
+  )
 
 (defn simulate [total players]
   (let [events  (apply interleave
@@ -116,9 +111,6 @@
         results (feed-all (ref players) events)]
     (apply await (map #(agent-for-player (:player %)) players))
     @results))
-
-
-
 
 (comment
 
@@ -129,17 +121,16 @@
   ;;     {:ability 13/50 , :player "Matt", :h 0, :avg 0.0, :ab 2}}
 
   ;; Wait a few moments
-  
+
   (simulate 400 PLAYERS)
 
   ;;=> #{{:ability 13/50,  :player "Matt", :h 95, :avg 0.2375, :ab 400}
   ;;     {:ability 8/25,   :player "Nick", :h 138, :avg 0.345, :ab 400}
   ;;     {:ability 19/100, :player "Ryan", :h 66, :avg 0.165, :ab 400}}
 
-
   (es/effect-all {} @(agent-for-player "Nick"))
 
   ;;=> {:ab 402, :h 140, :avg 0.3482587064676617}
 
   ;; REHYDRATION!!
-) 
+  )

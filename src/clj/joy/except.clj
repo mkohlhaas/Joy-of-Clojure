@@ -10,7 +10,6 @@
 
 ;; Something went wrong.
 
-
 (defn perform-cleaner-act [x y]
   (try
     (/ x y)

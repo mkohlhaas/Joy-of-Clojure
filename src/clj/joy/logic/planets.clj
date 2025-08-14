@@ -13,12 +13,11 @@
 (logic/fact orbits :neptune :sun)
 
 (logic/run* [q]
-  (logic/fresh [orbital body]
-    (orbits orbital body)
-    (logic/== q orbital)))
+            (logic/fresh [orbital body]
+                         (orbits orbital body)
+                         (logic/== q orbital)))
 
 ;;=> (:earth :saturn :jupiter :mars :mercury :neptune :uranus :venus)
-
 
 ;; stars
 
@@ -28,61 +27,58 @@
 
 (defn planeto [body]
   (logic/fresh [star]
-    (stars star)
-    (orbits body star)))
+               (stars star)
+               (orbits body star)))
 
 (logic/run* [q]
-  (planeto :earth))
+            (planeto :earth))
 
 ;;=> (_0)
 
 (logic/run* [q]
-  (planeto :earth)
-  (logic/== q true))
+            (planeto :earth)
+            (logic/== q true))
 
 ;;=> (true)
 
 (logic/run* [q]
-  (planeto :sun))
+            (planeto :sun))
 
 ;;=> ()
 
 (logic/run* [q]
-  (logic/fresh [orbital]
-    (planeto orbital)
-    (logic/== q orbital)))
-
-
+            (logic/fresh [orbital]
+                         (planeto orbital)
+                         (logic/== q orbital)))
 
 (logic/fact stars :alpha-centauri)
 (logic/fact orbits :Bb :alpha-centauri)
 
 (logic/run* [q]
-  (planeto :Bb))
+            (planeto :Bb))
 
 (logic/run* [q]
-  (logic/fresh [orbital]
-    (planeto orbital)
-    (logic/== q orbital)))
+            (logic/fresh [orbital]
+                         (planeto orbital)
+                         (logic/== q orbital)))
 
 ;; satellites
 
 (defn satelliteo [body]
   (logic/fresh [p]
-    (orbits body p)
-    (planeto p)))
+               (orbits body p)
+               (planeto p)))
 
 (logic/run* [q]
-  (satelliteo :sun))
+            (satelliteo :sun))
 
 (logic/run* [q]
-  (satelliteo :earth))
+            (satelliteo :earth))
 
 (logic/fact orbits :moon :earth)
 
 (logic/run* [q]
-  (satelliteo :moon))
-
+            (satelliteo :moon))
 
 ;; more data
 
@@ -94,9 +90,9 @@
 (logic/fact orbits :callisto :jupiter)
 
 (logic/run* [q]
-  (satelliteo :io))
+            (satelliteo :io))
 
 (logic/run* [q]
-  (satelliteo :leda))
+            (satelliteo :leda))
 
 

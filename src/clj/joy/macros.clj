@@ -13,8 +13,7 @@
 
   (contextual-eval '{a 1, b 2} '(let [b 1000] (+ a b)))
   ;;=> 1001  
-
-)
+  )
 
 (defmacro do-until [& clauses]
   (when clauses
@@ -33,10 +32,7 @@
 
   (unless true (println :nope))
 
-  (unless false (println :yep))
-
-)
-
+  (unless false (println :yep)))
 
 (defn from-end [s n] ;; #3_unless: Use our unless
   (let [delta (dec (- (count s) n))]
@@ -46,41 +42,41 @@
 (defmacro def-watched [name & value]
   `(do
      (def ~name ~@value)
-     (add-watch (var ~name) 
-                :re-bind 
+     (add-watch (var ~name)
+                :re-bind
                 (fn [~'key ~'r old# new#]
                   (println old# " -> " new#)))))
 
 ;; Domain DSL
 
 (defmacro domain [name & body]
-  `{:tag :domain, 
+  `{:tag :domain,
     :attrs {:name (str '~name)},
     :content [~@body]})
 
 (declare handle-things)
-    
+
 (defmacro grouping [name & body]
-  `{:tag :grouping, 
+  `{:tag :grouping,
     :attrs {:name (str '~name)},
     :content [~@(handle-things body)]})
 
 (declare grok-attrs grok-props)
-    
+
 (defn handle-things [things]
   (for [t things]
-    {:tag :thing, 
+    {:tag :thing,
      :attrs (grok-attrs (take-while (comp not vector?) t))
      :content (if-let [c (grok-props (drop-while (comp not vector?) t))]
-                       [c]
-                       [])}))
-    
+                [c]
+                [])}))
+
 (defn grok-attrs [attrs]
   (into {:name (str (first attrs))}
         (for [a (rest attrs)]
-          (cond 
-           (list? a) [:isa (str (second a))]
-           (string? a) [:comment a]))))
+          (cond
+            (list? a) [:isa (str (second a))]
+            (string? a) [:comment a]))))
 
 (defn grok-props [props]
   (when props
@@ -94,7 +90,7 @@
   (domain man-vs-monster
           (grouping people                  ;; #: Group of people
                     (Human "A stock human") ;; #: One kind of person
-       
+
                     (Man (isa Human) ;; #: Another kind of person
                          "A man, baby"
                          [name]
@@ -117,5 +113,5 @@
   `(let ~binding
      (try (do ~@body)
           (finally
-           (~close-fn ~(binding 0))))))
+            (~close-fn ~(binding 0))))))
 

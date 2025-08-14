@@ -21,8 +21,6 @@
 (defn qsort [xs]
   (sort-parts (list xs)))
 
-
-
 (comment
 
   (rand-ints 10)
@@ -32,5 +30,4 @@
 
   (qsort (rand-ints 20))
 
-  (take 10 (qsort (rand-ints 10000)))
-)
+  (take 10 (qsort (rand-ints 10000))))

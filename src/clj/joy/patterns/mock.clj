@@ -13,7 +13,7 @@
       (println "Started a mock simulator.")
       (throw (RuntimeException. "Called start! more than once."))))
   (stop!  [this] (println "Stopped a mock simulator."))
-  
+
   di/Sim
   (handle [_ _] 42))
 

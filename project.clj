@@ -3,13 +3,14 @@
   :url "http://www.joyfoclojure.com"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.12.1"]
+  :dependencies [[org.clojure/clojure       "1.12.1"]
                  [org.clojure/clojurescript "1.12.42"]
-                 [org.clojure/core.unify "0.7.0"]
-                 [org.clojure/core.logic "1.1.0"]]
+                 [org.clojure/core.unify    "0.7.0"]
+                 [org.clojure/core.logic    "1.1.0"]]
   :source-paths ["src/clj"]
   ;; :aot [joy.gui.DynaFrame]
-  :plugins [[lein-cljsbuild "1.1.8"]]
+  :plugins [[lein-cljsbuild              "1.1.8"]
+            [dev.weavejester/lein-cljfmt "0.13.1"]]
   :cljsbuild
   {:builds
    [{:source-paths ["src/cljs"]

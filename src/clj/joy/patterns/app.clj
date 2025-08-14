@@ -9,7 +9,6 @@
     (require lib)
     (di/build-system name cfg)))
 
-
 (comment
 
   (initialize :mock-sim config)
@@ -21,4 +20,4 @@
 
   (di/handle (initialize :mock-sim config) {})
   ;; java.lang.RuntimeException: Called start! more than once.  
-)
+  )
